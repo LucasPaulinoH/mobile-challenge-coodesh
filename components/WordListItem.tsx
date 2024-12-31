@@ -1,6 +1,6 @@
 import { SelectedWordContext } from "@/context/SelectedWord";
-import { Link, useNavigation } from "expo-router";
-import { useContext, useEffect } from "react";
+import { useCustomNavigation } from "@/hooks/useNavigation";
+import { useContext } from "react";
 import { Button, Text } from "react-native";
 
 interface WordListItemProps {
@@ -8,19 +8,20 @@ interface WordListItemProps {
 }
 
 const WordListItem = (props: WordListItemProps) => {
+  const { navigate } = useCustomNavigation();
+
   const { word } = props;
 
-  const { selectedWord, setSelectedWord } = useContext(SelectedWordContext);
+  const { setSelectedWord } = useContext(SelectedWordContext);
 
   return (
-    <Link href="/WordDetails">
-      <Button
-        onPress={() => {
-          setSelectedWord(word);
-        }}
-        title={word}
-      />
-    </Link>
+    <Button
+      onPress={() => {
+        setSelectedWord(word);
+        navigate("WordDetails");
+      }}
+      title={word}
+    />
   );
 };
 

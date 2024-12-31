@@ -1,17 +1,23 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { SelectedWordContext } from "@/context/SelectedWord";
 
+import NotFoundScreen from "./NotFound";
+import WordDetails from "./WordDetails";
+import HomeScreen from ".";
+
 SplashScreen.preventAutoHideAsync();
+const Stack = createNativeStackNavigator();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -30,11 +36,13 @@ export default function RootLayout() {
   return (
     <SelectedWordContext.Provider value={{ selectedWord, setSelectedWord }}>
       <ThemeProvider value={DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="+not-found" />
-          <Stack.Screen name="WordDetails" />
-        </Stack>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="NotFound" component={NotFoundScreen} />
+            <Stack.Screen name="WordDetails" component={WordDetails} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </ThemeProvider>
     </SelectedWordContext.Provider>
   );

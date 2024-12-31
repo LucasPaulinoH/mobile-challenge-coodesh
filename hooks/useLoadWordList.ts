@@ -5,8 +5,7 @@ const useLoadWordList = () => {
   const [wordList, setWordlist] = useState<string[]>([]);
 
   useEffect(() => {
-    const wordList = Object.keys(wordsDictionary);
-    setWordlist(wordList);
+    setWordlist(Object.keys(wordsDictionary));
   }, []);
 
   return wordList;

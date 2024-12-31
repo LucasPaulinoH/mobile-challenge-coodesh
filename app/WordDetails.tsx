@@ -1,11 +1,14 @@
 import { useFetchWordDefinition } from "@/hooks/useFetchWordDefinition";
+import { useCustomNavigation } from "@/hooks/useNavigation";
 import {
   formatWordPhoneticText,
   handleShowMeaningsString,
 } from "@/utils/stringUtils";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 
 const WordDetails = () => {
+  const navigation = useCustomNavigation();
+
   const { wordDefinition } = useFetchWordDefinition();
   let meanings: string[] = [];
 
@@ -16,6 +19,12 @@ const WordDetails = () => {
 
   return (
     <View>
+      <Button
+        title="<"
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
       {wordDefinition ? (
         <View>
           <Text>
