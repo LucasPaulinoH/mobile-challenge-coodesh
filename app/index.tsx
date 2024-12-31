@@ -8,11 +8,10 @@ export default function HomeScreen() {
   const wordList = useLoadWordList();
 
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
   const handleChangeTab = (index: number) => setSelectedTab(index);
 
-  const renderWordList = <WordList data={wordList} onItemPress={() => {}} />;
+  const renderWordList = <WordList data={wordList} />;
   const renderHistoryList = <View></View>;
   const renderFavoritesList = <View></View>;
 
