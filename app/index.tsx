@@ -1,48 +1,63 @@
+import { useCustomNavigation } from "@/hooks/useNavigation";
+import { FIREBASE_AUTH } from "@/utils/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useState } from "react";
-import { View } from "react-native";
-import styled from "styled-components/native";
-import useLoadWordList from "@/hooks/useLoadWordList";
-import WordList from "@/components/WordList";
+import { Button, KeyboardAvoidingView, TextInput, View } from "react-native";
 
-export default function HomeScreen() {
-  const wordList = useLoadWordList();
+const Login = () => {
+  const auth = FIREBASE_AUTH;
+  const { navigate } = useCustomNavigation();
 
-  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleChangeTab = (index: number) => setSelectedTab(index);
+  const handleLogin = async () => {
+    try {
+      const loginResponse = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (loginResponse) navigate("Home");
+    } catch (error: any) {
+      alert("Login failed: " + error?.message);
+    }
+  };
 
-  const renderWordList = <WordList data={wordList} />;
-  const renderHistoryList = <View></View>;
-  const renderFavoritesList = <View></View>;
+  const handleRegister = async () => {
+    try {
+      const registerResponse = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (registerResponse) alert("Account successfully created!");
+    } catch (error: any) {
+      alert("Registration failed: " + error?.message);
+    }
+  };
 
   return (
-    <Container>
-      <Tabs>
-        <Tab title="Word list" onPress={() => handleChangeTab(0)} />
-        <Tab title="History" onPress={() => handleChangeTab(1)} />
-        <Tab title="Favorites" onPress={() => handleChangeTab(2)} />
-      </Tabs>
-
-      {selectedTab === 0
-        ? renderWordList
-        : selectedTab === 1
-        ? renderHistoryList
-        : renderFavoritesList}
-    </Container>
+    <View>
+      <KeyboardAvoidingView behavior="padding">
+        <TextInput
+          value={email}
+          placeholder="Email*"
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          value={password}
+          placeholder="Password*"
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Button title="Sign in" onPress={handleLogin} />
+        <Button title="Create account" onPress={handleRegister} />
+      </KeyboardAvoidingView>
+    </View>
   );
-}
+};
 
-const Container = styled.View`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Tabs = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
-
-const Tab = styled.Button``;
+export default Login;
