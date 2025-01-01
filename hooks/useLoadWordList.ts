@@ -1,5 +1,6 @@
-import wordsDictionary from "@/utils/words_dictionary.json";
 import { useEffect, useState } from "react";
+
+import wordsDictionary from "../utils/words_dictionary.json";
 
 const useLoadWordList = () => {
   const [wordList, setWordlist] = useState<string[]>([]);

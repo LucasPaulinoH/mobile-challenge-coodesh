@@ -1,15 +1,16 @@
-import { useFetchWordDefinition } from "@/hooks/useFetchWordDefinition";
-import { useCustomNavigation } from "@/hooks/useNavigation";
+import { useNavigation } from "@react-navigation/native";
+import { useFetchWordDefinition } from "hooks/useFetchWordDefinition";
+import { Button, View, Text } from "react-native";
 import {
   formatWordPhoneticText,
   handleShowMeaningsString,
-} from "@/utils/stringUtils";
-import { View, Text, Button } from "react-native";
+} from "utils/stringUtils";
 
 const WordDetails = () => {
-  const navigation = useCustomNavigation();
+  const { navigate } = useNavigation();
 
   const { wordDefinition } = useFetchWordDefinition();
+
   let meanings: string[] = [];
 
   if (wordDefinition) {
@@ -19,17 +20,16 @@ const WordDetails = () => {
 
   return (
     <View>
-      <Button
-        title="<"
-        onPress={() => {
-          navigation.goBack();
-        }}
-      />
+      <Button title="<" onPress={() => navigate("Home")} />
       {wordDefinition ? (
         <View>
           <Text>
             <h1>{wordDefinition?.word}</h1>
-            <h2>{formatWordPhoneticText(wordDefinition?.phonetics[1].text)}</h2>
+
+            <h2>
+              {formatWordPhoneticText(wordDefinition?.phonetics[0]?.text) ||
+                null}
+            </h2>
           </Text>
 
           <View>
@@ -41,7 +41,13 @@ const WordDetails = () => {
             ))}
           </View>
         </View>
-      ) : null}
+      ) : (
+        <View>
+          <Text>
+            <h1>Invalid word</h1>
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

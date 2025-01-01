@@ -1,16 +1,19 @@
-import { SelectedWordContext } from "@/context/SelectedWord";
-import { apiServices } from "@/services";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { apiServices } from "services";
+
+import useSelectedWord from "./useSelectedWord";
 
 export const useFetchWordDefinition = () => {
-  const { selectedWord } = useContext(SelectedWordContext);
+  const { selectedWord } = useSelectedWord();
   const [wordDefinition, setWordDefinition] = useState<any | null>(null);
 
   const fetchWordDefinition = async () => {
     try {
       const definitionResponse = await apiServices.getWordDefinition(
-        selectedWord!.toLowerCase()
+        selectedWord!.toLowerCase(),
       );
+      console.log(definitionResponse[0]);
+
       setWordDefinition(definitionResponse[0]);
     } catch (error) {
       console.error("error fetching word: ", error);
@@ -18,7 +21,7 @@ export const useFetchWordDefinition = () => {
   };
 
   useEffect(() => {
-    fetchWordDefinition();
+    if (selectedWord && selectedWord.length > 0) fetchWordDefinition();
   }, []);
 
   return { wordDefinition };

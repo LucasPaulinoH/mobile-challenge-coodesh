@@ -6,6 +6,6 @@ interface SelectedWordContextType {
 }
 
 export const SelectedWordContext = createContext<SelectedWordContextType>({
-  selectedWord: "Run",
+  selectedWord: null,
   setSelectedWord: () => {},
 } as SelectedWordContextType);

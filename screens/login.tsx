@@ -1,27 +1,20 @@
-import { useCustomNavigation } from "@/hooks/useNavigation";
-import { FIREBASE_AUTH } from "@/utils/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useState } from "react";
 import { Button, KeyboardAvoidingView, TextInput, View } from "react-native";
+import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
-const Login = () => {
+export default function Login() {
   const auth = FIREBASE_AUTH;
-  const { navigate } = useCustomNavigation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      const loginResponse = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      if (loginResponse) navigate("Home");
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error: any) {
       alert("Login failed: " + error?.message);
     }
@@ -32,7 +25,7 @@ const Login = () => {
       const registerResponse = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
       if (registerResponse) alert("Account successfully created!");
     } catch (error: any) {
@@ -58,6 +51,4 @@ const Login = () => {
       </KeyboardAvoidingView>
     </View>
   );
-};
-
-export default Login;
+}
