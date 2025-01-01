@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import SelectedWordContextProvider from "context/SelectedWord/provider";
+import StatsContextProvider from "context/Stats/provider";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { useEffect, useState } from "react";
 import Home from "screens/home";
@@ -29,18 +30,20 @@ export default function Routes() {
 
   return (
     <SelectedWordContextProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Login"
-          screenOptions={{ headerShown: false }}
-        >
-          {user ? (
-            <Stack.Screen name="Logged" component={LoggedLayout} />
-          ) : (
-            <Stack.Screen name="Login" component={Login} />
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <StatsContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{ headerShown: false }}
+          >
+            {user ? (
+              <Stack.Screen name="Logged" component={LoggedLayout} />
+            ) : (
+              <Stack.Screen name="Login" component={Login} />
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </StatsContextProvider>
     </SelectedWordContextProvider>
   );
 }

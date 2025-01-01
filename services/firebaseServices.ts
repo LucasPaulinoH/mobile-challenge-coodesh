@@ -1,11 +1,5 @@
-import { doc, getDoc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { FIRESTORE_DB } from "utils/firebaseConfig";
-
-import { apiRequest } from "./apiProvider";
-
-export const apiServices = {
-  getWordDefinition: (word: string) => apiRequest.get(word),
-};
 
 const FIRESTORE_FAVORITES_COLLECTION_NAME = "user_favorites";
 const FIRESTORE_HISTORY_COLLECTION_NAME = "words_history";

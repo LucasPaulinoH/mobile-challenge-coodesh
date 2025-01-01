@@ -1,5 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import useCustomNavigation from "hooks/useCustomNavigation";
 import { useFetchWordDefinition } from "hooks/useFetchWordDefinition";
+import React from "react";
 import { Button, View, Text } from "react-native";
 import {
   formatWordPhoneticText,
@@ -7,16 +8,13 @@ import {
 } from "utils/stringUtils";
 
 const WordDetails = () => {
-  const { navigate } = useNavigation();
+  const { navigate } = useCustomNavigation();
 
   const { wordDefinition } = useFetchWordDefinition();
 
   let meanings: string[] = [];
-
-  if (wordDefinition) {
-    console.log(wordDefinition);
+  if (wordDefinition)
     meanings = handleShowMeaningsString(wordDefinition?.meanings!);
-  }
 
   return (
     <View>
@@ -28,6 +26,10 @@ const WordDetails = () => {
 
             <h2>
               {formatWordPhoneticText(wordDefinition?.phonetics[0]?.text) ||
+                null}
+            </h2>
+            <h2>
+              {formatWordPhoneticText(wordDefinition?.phonetics[1]?.text) ||
                 null}
             </h2>
           </Text>
@@ -48,6 +50,7 @@ const WordDetails = () => {
           </Text>
         </View>
       )}
+      <Button title="" />
     </View>
   );
 };

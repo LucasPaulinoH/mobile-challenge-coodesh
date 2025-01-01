@@ -1,46 +1,64 @@
-import { useNavigation } from "@react-navigation/native";
-import { SelectedWordContext } from "context/SelectedWord";
+import WordList from "components/WordList";
+import { useGetFavoriteWords } from "hooks/useGetFavoriteWords";
+import { useGetWordsHistory } from "hooks/useGetWordsHistory";
 import useLoadWordList from "hooks/useLoadWordList";
-import useSelectedWord from "hooks/useSelectedWord";
-import { useContext, useState } from "react";
-import { Button, View, Text, VirtualizedList } from "react-native";
+import useStats from "hooks/useStats";
+import React, { useEffect, useState } from "react";
+import { Button, Text, TextInput } from "react-native";
 import styled from "styled-components/native";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
 export default function Home() {
   const { currentUser } = FIREBASE_AUTH;
 
-  const { navigate } = useNavigation();
+  const { setStats } = useStats();
 
   const wordList = useLoadWordList();
+  const favoriteWordIndexes = useGetFavoriteWords(currentUser?.uid!);
+  const wordsHistoryIndexes = useGetWordsHistory(currentUser?.uid!);
 
-  const { setSelectedWord } = useSelectedWord();
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [search, setSearch] = useState("");
 
   const handleChangeTab = (index: number) => setSelectedTab(index);
 
+  useEffect(() => {
+    if (favoriteWordIndexes && wordsHistoryIndexes)
+      setStats({
+        selectedWordIndex: null,
+        favoriteWordIndexes,
+        historyIndexes: wordsHistoryIndexes,
+      });
+  }, [favoriteWordIndexes, wordsHistoryIndexes]);
+
   const renderWordList = (
-    <VirtualizedList
-      initialNumToRender={10}
-      data={wordList}
-      renderItem={({ item }) => (
-        <Button
-          title={String(item)}
-          onPress={() => {
-            setSelectedWord(String(item));
-            navigate("WordDetails");
-          }}
-        />
-      )}
-      getItemCount={(data) => data.length}
-      getItem={(data, index) => data[index]}
-      keyExtractor={(_, index) => index.toString()}
-      windowSize={10}
-    />
+    <>
+      <WordList words={wordList} search={search} />
+    </>
   );
-  const renderHistoryList = <View />;
-  const renderFavoritesList = <View />;
+
+  const renderHistoryList = (
+    <>
+      <WordList
+        words={wordList.filter((_, index) =>
+          wordsHistoryIndexes?.includes(index),
+        )}
+        search={search}
+      />
+    </>
+  );
+
+  const renderFavoritesList = (
+    <>
+      <WordList
+        words={wordList.filter((_, index) =>
+          favoriteWordIndexes?.includes(index),
+        )}
+        search={search}
+      />
+    </>
+  );
 
   return (
     <Container>
@@ -50,6 +68,11 @@ export default function Home() {
         onPress={() => {
           FIREBASE_AUTH.signOut();
         }}
+      />
+      <TextInput
+        placeholder="Search..."
+        value={search}
+        onChangeText={(newText) => setSearch(newText)}
       />
       <Tabs>
         <Tab title="Word list" onPress={() => handleChangeTab(0)} />
