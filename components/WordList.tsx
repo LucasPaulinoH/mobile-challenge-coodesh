@@ -2,7 +2,10 @@ import useCustomNavigation from "hooks/useCustomNavigation";
 import useSelectedWord from "hooks/useSelectedWord";
 import useStats from "hooks/useStats";
 import { Button, VirtualizedList } from "react-native";
-import { firestoreServices } from "services/firestoreServices";
+import {
+  FIRESTORE_HISTORY_COLLECTION_NAME,
+  firestoreServices,
+} from "services/firestoreServices";
 import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
@@ -79,11 +82,14 @@ const WordListItem = (props: WordListItemProps) => {
       selectedWordIndex,
     }));
 
-    if (!stats?.historyIndexes!.includes(selectedWordIndex)) {
-      stats?.historyIndexes!.push(selectedWordIndex!)!;
-      firestoreServices.updateWordHistory(
+    const updatedHistory = stats?.historyIndexes! || [];
+
+    if (!updatedHistory.includes(selectedWordIndex)) {
+      updatedHistory.push(selectedWordIndex)!;
+      firestoreServices.updateCollection(
         currentUser?.uid!,
-        stats?.historyIndexes!,
+        FIRESTORE_HISTORY_COLLECTION_NAME,
+        { history: updatedHistory },
       );
     }
 

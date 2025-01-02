@@ -13,22 +13,22 @@ export const firestoreServices = {
       console.error("Error getting collection from firestore: ", error);
     }
   },
-  updateWordHistory: async (userId: string, history: number[]) => {
+  updateCollection: async (
+    userId: string,
+    collection: string,
+    data: object,
+  ) => {
     try {
-      const documentRef = doc(
-        FIRESTORE_DB,
-        FIRESTORE_HISTORY_COLLECTION_NAME,
-        userId,
-      );
+      const documentRef = doc(FIRESTORE_DB, collection, userId);
 
       const docSnap = await getDoc(documentRef);
 
-      if (docSnap.exists()) await updateDoc(documentRef, { history });
-      else await setDoc(documentRef, { history: [] }, { merge: true });
+      if (docSnap.exists()) await updateDoc(documentRef, data);
+      else await setDoc(documentRef, data);
 
-      console.log("Documento atualizado com sucesso!");
+      console.log("Success");
     } catch (error) {
-      console.error("Erro ao atualizar documento no Firestore: ", error);
+      console.error("Error updating Firestore document: ", error);
     }
   },
 };

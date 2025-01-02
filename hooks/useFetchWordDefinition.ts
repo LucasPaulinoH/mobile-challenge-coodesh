@@ -14,7 +14,7 @@ export const useFetchWordDefinition = () => {
       const response = await apiServices.GetWordDefinition(
         selectedWord.toLowerCase(),
       );
-      return response[0];
+      return response[0] || response[1];
     },
   });
 

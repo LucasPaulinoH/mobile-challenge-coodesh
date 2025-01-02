@@ -1,5 +1,7 @@
+import FavoriteButton from "components/FavoriteButton";
 import useCustomNavigation from "hooks/useCustomNavigation";
 import { useFetchWordDefinition } from "hooks/useFetchWordDefinition";
+import useStats from "hooks/useStats";
 import React from "react";
 import { Button, View, Text } from "react-native";
 import {
@@ -9,6 +11,8 @@ import {
 
 const WordDetails = () => {
   const { navigate } = useCustomNavigation();
+
+  const { stats } = useStats();
 
   const { wordDefinition } = useFetchWordDefinition();
 
@@ -50,7 +54,7 @@ const WordDetails = () => {
           </Text>
         </View>
       )}
-      <Button title="" />
+      <FavoriteButton stats={stats!} />
     </View>
   );
 };

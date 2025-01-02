@@ -12,7 +12,7 @@ export const useGetWordsHistory = (userId: string) => {
       userId,
       FIRESTORE_HISTORY_COLLECTION_NAME,
     );
-    setWordsHistory(wordsHistoryResponse?.history);
+    setWordsHistory(wordsHistoryResponse?.history!);
   };
 
   useEffect(() => {

@@ -12,7 +12,7 @@ export const useGetFavoriteWords = (userId: string) => {
       userId,
       FIRESTORE_FAVORITES_COLLECTION_NAME,
     );
-    setFavoriteWords(favoriteWordsResponse?.favorites);
+    setFavoriteWords(favoriteWordsResponse?.favorites!);
   };
 
   useEffect(() => {
