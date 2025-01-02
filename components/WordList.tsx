@@ -2,6 +2,8 @@ import useCustomNavigation from "hooks/useCustomNavigation";
 import useSelectedWord from "hooks/useSelectedWord";
 import useStats from "hooks/useStats";
 import { Button, VirtualizedList } from "react-native";
+import { firestoreServices } from "services/firestoreServices";
+import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
 interface WordListProps {
   words: string[];
@@ -43,10 +45,13 @@ interface WordListItemProps {
 const WordListItem = (props: WordListItemProps) => {
   const { navigate } = useCustomNavigation();
 
+  const { currentUser } = FIREBASE_AUTH;
   const { word, index } = props;
 
   const { setSelectedWord } = useSelectedWord();
-  const { setStats } = useStats();
+  const { stats, setStats } = useStats();
+
+  const wasWordAlreadySearched = () => stats?.historyIndexes.includes(index);
 
   return (
     <Button
@@ -57,6 +62,17 @@ const WordListItem = (props: WordListItemProps) => {
           selectedWordIndex: index,
         }));
         setSelectedWord(word);
+
+        if (!wasWordAlreadySearched()) {
+          const updatedHistory = stats?.historyIndexes;
+          updatedHistory?.push(index);
+
+          firestoreServices.updateWordHistory(
+            currentUser?.uid!,
+            updatedHistory!,
+          );
+        }
+
         navigate("WordDetails");
       }}
     />

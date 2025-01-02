@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import { firebaseServices } from "services/firebaseServices";
+import {
+  FIRESTORE_FAVORITES_COLLECTION_NAME,
+  firestoreServices,
+} from "services/firestoreServices";
 
 export const useGetFavoriteWords = (userId: string) => {
   const [favoriteWords, setFavoriteWords] = useState<number[] | null>(null);
 
   const fetchUserFavoriteWords = async () => {
-    const favoriteWordsResponse =
-      await firebaseServices.getUserFavoriteWords(userId);
+    const favoriteWordsResponse = await firestoreServices.getCollection(
+      userId,
+      FIRESTORE_FAVORITES_COLLECTION_NAME,
+    );
     setFavoriteWords(favoriteWordsResponse?.favorites);
   };
 
