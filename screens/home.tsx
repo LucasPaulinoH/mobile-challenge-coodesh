@@ -6,6 +6,7 @@ import useStats from "hooks/useStats";
 import React, { useEffect, useState } from "react";
 import { Button, Text, TextInput } from "react-native";
 import styled from "styled-components/native";
+import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
 export default function Home() {
@@ -34,28 +35,22 @@ export default function Home() {
 
   const renderWordList = (
     <>
-      <WordList words={wordList} search={search} />
+      <WordList words={wordList} search={search} mode={WordListMode.ALL} />
     </>
   );
 
   const renderHistoryList = (
     <>
-      <WordList
-        words={wordList.filter((_, index) =>
-          wordsHistoryIndexes?.includes(index),
-        )}
-        search={search}
-      />
+      <WordList words={wordList} search={search} mode={WordListMode.HISTORY} />
     </>
   );
 
   const renderFavoritesList = (
     <>
       <WordList
-        words={wordList.filter((_, index) =>
-          favoriteWordIndexes?.includes(index),
-        )}
+        words={wordList}
         search={search}
+        mode={WordListMode.FAVORITES}
       />
     </>
   );

@@ -2,19 +2,38 @@ import useCustomNavigation from "hooks/useCustomNavigation";
 import useSelectedWord from "hooks/useSelectedWord";
 import useStats from "hooks/useStats";
 import { Button, VirtualizedList } from "react-native";
-import { firestoreServices } from "services/firestoreServices";
+import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
 interface WordListProps {
   words: string[];
   search: string;
+  mode: WordListMode;
 }
 
 const WordList = (props: WordListProps) => {
-  const { words, search } = props;
+  const { words, search, mode } = props;
+  const { stats } = useStats();
 
-  const filteredWords = words!.filter((word) =>
-    word.toLowerCase().includes(search.toLowerCase()),
+  const handleWordFilter = () => {
+    switch (mode) {
+      case WordListMode.ALL:
+        return words;
+      case WordListMode.HISTORY:
+        return words
+          .filter((_, index) => (stats?.historyIndexes || []).includes(index))
+          .filter((word) => word.toLowerCase()?.includes(search.toLowerCase()));
+      case WordListMode.FAVORITES:
+        return words.filter((_, index) =>
+          (stats?.favoriteWordIndexes || []).includes(index),
+        );
+      default:
+        return [];
+    }
+  };
+
+  const filteredWords = handleWordFilter().filter((word) =>
+    word.toLowerCase()?.includes(search.toLowerCase()),
   );
 
   return (
@@ -24,7 +43,7 @@ const WordList = (props: WordListProps) => {
       renderItem={({ item }) => (
         <WordListItem
           word={String(item)}
-          index={words.indexOf(item as string)}
+          selectedWordIndex={words.indexOf(item as string)}
         />
       )}
       getItemCount={(data) => data.length}
@@ -39,42 +58,28 @@ export default WordList;
 
 interface WordListItemProps {
   word: string;
-  index: number;
+  selectedWordIndex: number;
 }
 
 const WordListItem = (props: WordListItemProps) => {
   const { navigate } = useCustomNavigation();
 
-  const { currentUser } = FIREBASE_AUTH;
-  const { word, index } = props;
-
   const { setSelectedWord } = useSelectedWord();
+
+  const { word, selectedWordIndex } = props;
+  const { currentUser } = FIREBASE_AUTH;
   const { stats, setStats } = useStats();
 
-  const wasWordAlreadySearched = () => stats?.historyIndexes.includes(index);
+  const handleWordClick = () => {
+    setSelectedWord(word);
 
-  return (
-    <Button
-      title={word}
-      onPress={() => {
-        setStats((previousStats) => ({
-          ...(previousStats || { historyIndexes: [], favoriteWordIndexes: [] }),
-          selectedWordIndex: index,
-        }));
-        setSelectedWord(word);
+    setStats((previousStats) => ({
+      ...(previousStats || { historyIndexes: [], favoriteWordIndexes: [] }),
+      selectedWordIndex,
+    }));
 
-        if (!wasWordAlreadySearched()) {
-          const updatedHistory = stats?.historyIndexes;
-          updatedHistory?.push(index);
+    navigate("WordDetails");
+  };
 
-          firestoreServices.updateWordHistory(
-            currentUser?.uid!,
-            updatedHistory!,
-          );
-        }
-
-        navigate("WordDetails");
-      }}
-    />
-  );
+  return <Button title={word} onPress={handleWordClick} />;
 };

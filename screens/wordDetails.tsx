@@ -12,6 +12,8 @@ const WordDetails = () => {
 
   const { wordDefinition } = useFetchWordDefinition();
 
+  console.log(wordDefinition);
+
   let meanings: string[] = [];
   if (wordDefinition)
     meanings = handleShowMeaningsString(wordDefinition?.meanings!);

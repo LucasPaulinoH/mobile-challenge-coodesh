@@ -1,4 +1,4 @@
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { getDoc, doc, updateDoc, setDoc } from "firebase/firestore";
 import { FIRESTORE_DB } from "utils/firebaseConfig";
 
 export const FIRESTORE_FAVORITES_COLLECTION_NAME = "user_favorites";
@@ -20,7 +20,11 @@ export const firestoreServices = {
         FIRESTORE_HISTORY_COLLECTION_NAME,
         userId,
       );
-      await updateDoc(documentRef, { history });
+
+      const docSnap = await getDoc(documentRef);
+
+      if (docSnap.exists()) await updateDoc(documentRef, { history });
+      else await setDoc(documentRef, { history: [] }, { merge: true });
 
       console.log("Documento atualizado com sucesso!");
     } catch (error) {
