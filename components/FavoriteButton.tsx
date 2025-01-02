@@ -22,11 +22,11 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
   const isFavorite = () => updatedFavorites.includes(stats?.selectedWordIndex!);
 
   const handleFavoriteClick = () => {
-    if (!isFavorite()) updatedFavorites.push(stats?.selectedWordIndex!);
-    else
-      updatedFavorites = updatedFavorites.filter(
-        (index) => index !== stats?.selectedWordIndex!,
-      );
+    !isFavorite()
+      ? updatedFavorites.push(stats?.selectedWordIndex!)
+      : (updatedFavorites = updatedFavorites.filter(
+          (index) => index !== stats?.selectedWordIndex!,
+        ));
 
     firestoreServices
       .updateCollection(

@@ -86,6 +86,7 @@ const WordListItem = (props: WordListItemProps) => {
 
     if (!updatedHistory.includes(selectedWordIndex)) {
       updatedHistory.push(selectedWordIndex)!;
+
       firestoreServices.updateCollection(
         currentUser?.uid!,
         FIRESTORE_HISTORY_COLLECTION_NAME,

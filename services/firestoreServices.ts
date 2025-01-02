@@ -23,10 +23,9 @@ export const firestoreServices = {
 
       const docSnap = await getDoc(documentRef);
 
-      if (docSnap.exists()) await updateDoc(documentRef, data);
-      else await setDoc(documentRef, data);
-
-      console.log("Success");
+      docSnap.exists()
+        ? await updateDoc(documentRef, data)
+        : await setDoc(documentRef, data);
     } catch (error) {
       console.error("Error updating Firestore document: ", error);
     }

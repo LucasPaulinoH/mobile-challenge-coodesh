@@ -1,9 +1,11 @@
+import AudioPlayer from "components/AudioPlayer";
 import FavoriteButton from "components/FavoriteButton";
 import useCustomNavigation from "hooks/useCustomNavigation";
 import { useFetchWordDefinition } from "hooks/useFetchWordDefinition";
 import useStats from "hooks/useStats";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, View, Text } from "react-native";
+import { searchForPhoneticAudioSource } from "utils/diverse";
 import {
   formatWordPhoneticText,
   handleShowMeaningsString,
@@ -17,6 +19,7 @@ const WordDetails = () => {
   const { wordDefinition } = useFetchWordDefinition();
 
   let meanings: string[] = [];
+
   if (wordDefinition)
     meanings = handleShowMeaningsString(wordDefinition?.meanings!);
 
@@ -46,6 +49,10 @@ const WordDetails = () => {
               <Text key={index}>{meaning}</Text>
             ))}
           </View>
+
+          <AudioPlayer
+            url={searchForPhoneticAudioSource(wordDefinition?.phonetics)!}
+          />
         </View>
       ) : (
         <View>
