@@ -15,8 +15,8 @@ export default function Home() {
   const { setStats } = useStats();
 
   const wordList = useLoadWordList();
-  const favoriteWordIndexes = useGetFavoriteWords(currentUser?.uid!);
-  const wordsHistoryIndexes = useGetWordsHistory(currentUser?.uid!);
+  const favoriteWordIndexes = useGetFavoriteWords(currentUser?.uid!)!;
+  const wordsHistoryIndexes = useGetWordsHistory(currentUser?.uid!)!;
 
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -25,12 +25,11 @@ export default function Home() {
   const handleChangeTab = (index: number) => setSelectedTab(index);
 
   useEffect(() => {
-    if (favoriteWordIndexes && wordsHistoryIndexes)
-      setStats({
-        selectedWordIndex: null,
-        favoriteWordIndexes,
-        historyIndexes: wordsHistoryIndexes,
-      });
+    setStats({
+      selectedWordIndex: null,
+      favoriteWordIndexes,
+      historyIndexes: wordsHistoryIndexes,
+    });
   }, [favoriteWordIndexes, wordsHistoryIndexes]);
 
   const renderWordList = (
@@ -61,6 +60,7 @@ export default function Home() {
       <Button
         title="Logout"
         onPress={() => {
+          setStats(null);
           FIREBASE_AUTH.signOut();
         }}
       />
