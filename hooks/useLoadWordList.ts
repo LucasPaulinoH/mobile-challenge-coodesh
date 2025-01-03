@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import wordsDictionary from "../utils/words_dictionary.json";
 
@@ -9,7 +9,7 @@ const useLoadWordList = () => {
     setWordlist(Object.keys(wordsDictionary));
   }, []);
 
-  return wordList;
+  return useMemo(() => wordList, [wordList]);
 };
 
 export default useLoadWordList;

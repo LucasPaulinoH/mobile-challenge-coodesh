@@ -1,23 +1,23 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   FIRESTORE_FAVORITES_COLLECTION_NAME,
   firestoreServices,
 } from "services/firestoreServices";
 
+const fetchFavoriteWords = async (userId: string) => {
+  const favoriteWordsResponse = await firestoreServices.getCollection(
+    userId,
+    FIRESTORE_FAVORITES_COLLECTION_NAME,
+  );
+  return favoriteWordsResponse?.favorites;
+};
+
 export const useGetFavoriteWords = (userId: string) => {
-  const [favoriteWords, setFavoriteWords] = useState<number[] | null>(null);
+  const { data } = useQuery({
+    queryKey: ["favoriteWords", userId],
+    queryFn: () => fetchFavoriteWords(userId),
+    retry: 1,
+  });
 
-  const fetchUserFavoriteWords = async () => {
-    const favoriteWordsResponse = await firestoreServices.getCollection(
-      userId,
-      FIRESTORE_FAVORITES_COLLECTION_NAME,
-    );
-    setFavoriteWords(favoriteWordsResponse?.favorites!);
-  };
-
-  useEffect(() => {
-    if (userId) fetchUserFavoriteWords();
-  }, [userId]);
-
-  return favoriteWords;
+  return { favoriteWords: data };
 };

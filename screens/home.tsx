@@ -22,8 +22,8 @@ export default function Home() {
   const { setStats } = useStats();
 
   const wordList = useLoadWordList();
-  const favoriteWordIndexes = useGetFavoriteWords(currentUser?.uid!)!;
-  const wordsHistoryIndexes = useGetWordsHistory(currentUser?.uid!)!;
+  const { favoriteWords } = useGetFavoriteWords(currentUser?.uid!)!;
+  const { wordsHistory } = useGetWordsHistory(currentUser?.uid!)!;
 
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -37,10 +37,10 @@ export default function Home() {
   useEffect(() => {
     setStats({
       selectedWordIndex: null,
-      favoriteWordIndexes,
-      historyIndexes: wordsHistoryIndexes,
+      favoriteWordIndexes: favoriteWords,
+      historyIndexes: wordsHistory,
     });
-  }, [favoriteWordIndexes, wordsHistoryIndexes]);
+  }, [favoriteWords, wordsHistory]);
 
   const renderWordList = (
     <>

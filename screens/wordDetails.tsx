@@ -6,9 +6,8 @@ import useCustomNavigation from "hooks/useCustomNavigation";
 import { useFetchWordDefinition } from "hooks/useFetchWordDefinition";
 import useStats from "hooks/useStats";
 import { IoChevronBackOutline } from "react-icons/io5";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text } from "react-native";
 import styled from "styled-components/native";
-import { searchForPhoneticAudioSource } from "utils/diverse";
 import {
   DEFAULT_BUTTON_DIMENSIONS,
   formatWordPhoneticText,
@@ -55,21 +54,19 @@ const WordDetails = () => {
                     {`${
                       formatWordPhoneticText(
                         wordDefinition?.phonetics[0]?.text,
-                      ) || ""
-                    } ${
+                      ) ||
                       formatWordPhoneticText(
                         wordDefinition?.phonetics[1]?.text,
-                      ) || ""
+                      ) ||
+                      "No phonetics found"
                     } `}
                   </h2>
                 </Text>
               </WordAndPhoneticsBoard>
 
-              {searchForPhoneticAudioSource(wordDefinition?.phonetics)! && (
-                <AudioPlayer
-                  url={searchForPhoneticAudioSource(wordDefinition?.phonetics)!}
-                />
-              )}
+              <View style={{ marginBottom: -20 }}>
+                <AudioPlayer text={wordDefinition?.word!} />
+              </View>
 
               <MeaningsContainer>
                 <Text>

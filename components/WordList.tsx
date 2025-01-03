@@ -1,7 +1,7 @@
 import useCustomNavigation from "hooks/useCustomNavigation";
 import useSelectedWord from "hooks/useSelectedWord";
 import useStats from "hooks/useStats";
-import { Text, View, VirtualizedList } from "react-native";
+import { Text, VirtualizedList } from "react-native";
 import {
   FIRESTORE_HISTORY_COLLECTION_NAME,
   firestoreServices,
@@ -50,7 +50,7 @@ const WordList = (props: WordListProps) => {
     return result;
   };
 
-  const chunkedWords = chunkArray(filteredWords, 3);
+  const chunkedWords = chunkArray(filteredWords, 2);
 
   return (
     <VirtualizedList
@@ -81,7 +81,7 @@ const WordListItemRow = styled.View`
   flex-direction: row;
   justify-content: space-around;
   max-width: 400px;
-  width: 100%;
+  min-width: 100%;
   margin-bottom: 10px;
   gap: 10px;
 `;
