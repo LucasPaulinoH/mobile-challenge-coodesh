@@ -20,4 +20,6 @@ export const handleShowMeaningsString = (meanings: Meanings[]): string[] => {
   return formattedMeaningStrings;
 };
 
+export const getUsernameFromEmail = (email: string) => email?.split("@")[0];
+
 export const DEFAULT_BUTTON_DIMENSIONS = "25px";

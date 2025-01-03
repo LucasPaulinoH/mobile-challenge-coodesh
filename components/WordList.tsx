@@ -1,11 +1,12 @@
 import useCustomNavigation from "hooks/useCustomNavigation";
 import useSelectedWord from "hooks/useSelectedWord";
 import useStats from "hooks/useStats";
-import { Button, VirtualizedList } from "react-native";
+import { Text, View, VirtualizedList } from "react-native";
 import {
   FIRESTORE_HISTORY_COLLECTION_NAME,
   firestoreServices,
 } from "services/firestoreServices";
+import styled from "styled-components/native";
 import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
@@ -40,15 +41,31 @@ const WordList = (props: WordListProps) => {
     word.toLowerCase()?.includes(search.toLowerCase()),
   );
 
+  const chunkArray = (array: string[], size: number) => {
+    const result = [];
+
+    for (let i = 0; i < array.length; i += size)
+      result.push(array.slice(i, i + size));
+
+    return result;
+  };
+
+  const chunkedWords = chunkArray(filteredWords, 3);
+
   return (
     <VirtualizedList
-      data={filteredWords}
-      initialNumToRender={10}
-      renderItem={({ item }) => (
-        <WordListItem
-          word={String(item)}
-          selectedWordIndex={words.indexOf(item as string)}
-        />
+      data={chunkedWords}
+      initialNumToRender={1}
+      renderItem={({ item }: { item: string[] }) => (
+        <WordListItemRow>
+          {item.map((word: string, index: number) => (
+            <WordListItem
+              key={index}
+              word={word}
+              selectedWordIndex={words.indexOf(word)}
+            />
+          ))}
+        </WordListItemRow>
       )}
       getItemCount={(data) => data.length}
       getItem={(data, index) => data[index]}
@@ -59,6 +76,15 @@ const WordList = (props: WordListProps) => {
 };
 
 export default WordList;
+
+const WordListItemRow = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 10px;
+  gap: 10px;
+`;
 
 interface WordListItemProps {
   word: string;
@@ -97,5 +123,15 @@ const WordListItem = (props: WordListItemProps) => {
     navigate("WordDetails");
   };
 
-  return <Button title={word} onPress={handleWordClick} />;
+  return (
+    <WordListItemContainer onPress={handleWordClick}>
+      <Text style={{ fontSize: 18 }}>{word}</Text>
+    </WordListItemContainer>
+  );
 };
+
+const WordListItemContainer = styled.TouchableOpacity`
+  background-color: #eee;
+  padding: 10px;
+  border-radius: 5px;
+`;

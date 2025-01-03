@@ -1,4 +1,5 @@
 import AudioPlayer from "components/AudioPlayer";
+import Loading from "components/Loading";
 import FavoriteButton from "components/buttons/FavoriteButton";
 import IconButton from "components/buttons/IconButton";
 import useCustomNavigation from "hooks/useCustomNavigation";
@@ -96,7 +97,7 @@ const WordDetails = () => {
         </View>
       ) : (
         <View>
-          <ActivityIndicator size="large" color="#000" />
+          <Loading />
         </View>
       )}
     </Container>

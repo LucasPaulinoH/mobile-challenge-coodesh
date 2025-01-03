@@ -11,7 +11,10 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import styled from "styled-components/native";
 import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
-import { DEFAULT_BUTTON_DIMENSIONS } from "utils/stringUtils";
+import {
+  DEFAULT_BUTTON_DIMENSIONS,
+  getUsernameFromEmail,
+} from "utils/stringUtils";
 
 export default function Home() {
   const { currentUser } = FIREBASE_AUTH;
@@ -64,7 +67,7 @@ export default function Home() {
   return (
     <Container>
       <Header>
-        <Username>{currentUser?.email?.split("@")[0]}</Username>
+        <Username>{`Welcome, ${getUsernameFromEmail(currentUser?.email!)}!`}</Username>
         <IconButton
           onPress={handleLogout}
           icon={
@@ -82,11 +85,15 @@ export default function Home() {
 
         <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
 
-        {selectedTab === 0
-          ? renderWordList
-          : selectedTab === 1
-            ? renderHistoryList
-            : renderFavoritesList}
+        {wordList ? (
+          <>
+            {selectedTab === 0
+              ? renderWordList
+              : selectedTab === 1
+                ? renderHistoryList
+                : renderFavoritesList}
+          </>
+        ) : null}
       </InnerContainer>
     </Container>
   );
