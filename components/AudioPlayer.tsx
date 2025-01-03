@@ -33,7 +33,6 @@ const AudioPlayer = (props: AudioPlayerProps) => {
   const handleAudioEnding = () => {
     setIsPlaying(false);
     setCurrentTime(0);
-    setDuration(0);
   };
 
   const handleTimeUpdate = () => {

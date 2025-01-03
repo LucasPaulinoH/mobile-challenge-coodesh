@@ -6,7 +6,7 @@ import useSelectedWord from "./useSelectedWord";
 export const useFetchWordDefinition = () => {
   const { selectedWord } = useSelectedWord();
 
-  const { data: wordDefinition } = useQuery({
+  const { data: wordDefinition, isLoading } = useQuery({
     queryKey: ["wordDefinition", selectedWord],
     queryFn: async () => {
       if (!selectedWord || selectedWord.length === 0) return null;
@@ -16,7 +16,8 @@ export const useFetchWordDefinition = () => {
       );
       return response[0] || response[1];
     },
+    retry: 1,
   });
 
-  return { wordDefinition };
+  return { wordDefinition, isLoading };
 };

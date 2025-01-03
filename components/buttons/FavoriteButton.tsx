@@ -10,7 +10,7 @@ import { Stats } from "types/stats";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
 import { DEFAULT_BUTTON_DIMENSIONS } from "utils/stringUtils";
 
-import LabelButton from "./buttons/LabelButton";
+import LabelButton from "./LabelButton";
 
 interface FavoriteButtonProps {
   stats: Stats;
@@ -50,7 +50,7 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
 
   return (
     <LabelButton
-      label={!isFavorite() ? "Favoritar" : "Desfavoritar"}
+      label={!isFavorite() ? "Favorite" : "Unfavorite"}
       onPress={handleFavoriteClick}
       icon={
         !isFavorite() ? (
