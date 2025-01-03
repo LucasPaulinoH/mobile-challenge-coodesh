@@ -1,13 +1,17 @@
+import Input from "components/Input";
+import Tabs from "components/Tabs";
 import WordList from "components/WordList";
+import IconButton from "components/buttons/IconButton";
 import { useGetFavoriteWords } from "hooks/useGetFavoriteWords";
 import { useGetWordsHistory } from "hooks/useGetWordsHistory";
 import useLoadWordList from "hooks/useLoadWordList";
 import useStats from "hooks/useStats";
 import React, { useEffect, useState } from "react";
-import { Button, Text, TextInput } from "react-native";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 import styled from "styled-components/native";
 import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
+import { DEFAULT_BUTTON_DIMENSIONS } from "utils/stringUtils";
 
 export default function Home() {
   const { currentUser } = FIREBASE_AUTH;
@@ -22,7 +26,10 @@ export default function Home() {
 
   const [search, setSearch] = useState("");
 
-  const handleChangeTab = (index: number) => setSelectedTab(index);
+  const handleLogout = () => {
+    setStats(null);
+    FIREBASE_AUTH.signOut();
+  };
 
   useEffect(() => {
     setStats({
@@ -56,30 +63,31 @@ export default function Home() {
 
   return (
     <Container>
-      <Text>{currentUser?.email?.split("@")[0]}</Text>
-      <Button
-        title="Logout"
-        onPress={() => {
-          setStats(null);
-          FIREBASE_AUTH.signOut();
-        }}
-      />
-      <TextInput
-        placeholder="Search..."
-        value={search}
-        onChangeText={(newText) => setSearch(newText)}
-      />
-      <Tabs>
-        <Tab title="Word list" onPress={() => handleChangeTab(0)} />
-        <Tab title="History" onPress={() => handleChangeTab(1)} />
-        <Tab title="Favorites" onPress={() => handleChangeTab(2)} />
-      </Tabs>
+      <Header>
+        <Username>{currentUser?.email?.split("@")[0]}</Username>
+        <IconButton
+          onPress={handleLogout}
+          icon={
+            <RiLogoutBoxRLine
+              style={{
+                width: DEFAULT_BUTTON_DIMENSIONS,
+                height: DEFAULT_BUTTON_DIMENSIONS,
+              }}
+            />
+          }
+        />
+      </Header>
+      <InnerContainer>
+        <Input placeholder="Search..." value={search} setValue={setSearch} />
 
-      {selectedTab === 0
-        ? renderWordList
-        : selectedTab === 1
-          ? renderHistoryList
-          : renderFavoritesList}
+        <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+
+        {selectedTab === 0
+          ? renderWordList
+          : selectedTab === 1
+            ? renderHistoryList
+            : renderFavoritesList}
+      </InnerContainer>
     </Container>
   );
 }
@@ -90,11 +98,29 @@ const Container = styled.View`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 30px;
+  padding: 30px;
 `;
 
-const Tabs = styled.View`
+const InnerContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  max-width: 400px;
+`;
+
+const Header = styled.View`
+  width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-const Tab = styled.Button``;
+const Username = styled.Text`
+  font-weight: bold;
+`;

@@ -1,6 +1,11 @@
 import Slider from "@react-native-community/slider";
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "react-native";
+import { GiSoundWaves } from "react-icons/gi";
+import { IoIosPlay } from "react-icons/io";
+import styled from "styled-components/native";
+import { DEFAULT_BUTTON_DIMENSIONS } from "utils/stringUtils";
+
+import IconButton from "./buttons/IconButton";
 
 interface AudioPlayerProps {
   url: string;
@@ -20,9 +25,15 @@ const AudioPlayer = (props: AudioPlayerProps) => {
     setCurrentTime(e.target.value);
   };
 
-  const handlePlay = () => {
+  const togglePlay = () => {
     audioRef?.current?.play();
     setIsPlaying(true);
+  };
+
+  const handleAudioEnding = () => {
+    setIsPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
   };
 
   const handleTimeUpdate = () => {
@@ -32,26 +43,66 @@ const AudioPlayer = (props: AudioPlayerProps) => {
 
   useEffect(() => {
     audioRef.current?.addEventListener("timeupdate", handleTimeUpdate);
+    audioRef.current?.addEventListener("ended", handleAudioEnding);
 
-    return () =>
+    return () => {
       audioRef.current?.removeEventListener("timeupdate", handleTimeUpdate);
+      audioRef.current?.removeEventListener("ended", handleAudioEnding);
+    };
   }, []);
 
   return (
-    <>
-      <Slider
-        style={{ width: 200, height: 40 }}
-        minimumValue={0}
-        maximumValue={duration}
-        value={currentTime}
-        onValueChange={handleSeek}
-        minimumTrackTintColor="#FFFFFF"
-        maximumTrackTintColor="#000000"
-      />
+    <AudioPlayerContainer>
+      {!isPlaying ? (
+        <IconButton
+          onPress={togglePlay}
+          icon={
+            <IoIosPlay
+              style={{
+                width: DEFAULT_BUTTON_DIMENSIONS,
+                height: DEFAULT_BUTTON_DIMENSIONS,
+              }}
+            />
+          }
+        />
+      ) : (
+        <GiSoundWaves
+          style={{
+            width: DEFAULT_BUTTON_DIMENSIONS,
+            height: DEFAULT_BUTTON_DIMENSIONS,
+          }}
+        />
+      )}
+
+      <SliderContainer>
+        <Slider
+          style={{ height: 10, width: "100%" }}
+          minimumValue={0}
+          maximumValue={duration}
+          value={currentTime}
+          onValueChange={handleSeek}
+          thumbTintColor="#000"
+        />
+      </SliderContainer>
       <audio src={url} ref={audioRef} />
-      <Button title="play" onPress={handlePlay} />
-    </>
+    </AudioPlayerContainer>
   );
 };
 
 export default AudioPlayer;
+
+const AudioPlayerContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+  margin: 0;
+`;
+
+const SliderContainer = styled.View`
+  width: 89%;
+  max-width: 400px;
+`;

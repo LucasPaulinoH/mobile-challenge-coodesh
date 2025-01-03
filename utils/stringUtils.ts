@@ -19,3 +19,5 @@ export const handleShowMeaningsString = (meanings: Meanings[]): string[] => {
 
   return formattedMeaningStrings;
 };
+
+export const DEFAULT_BUTTON_DIMENSIONS = "25px";

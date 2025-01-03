@@ -1,10 +1,11 @@
 {
   "expo": {
     "name": "namu-dictionary-challenge",
-    "slug": "namu-dictionary-challenge",
+    "slug": "namu-mobile-dictionary",
     "version": "1.0.0",
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
     },
     "experiments": {
       "tsconfigPaths": true
@@ -15,7 +16,8 @@
         {
           "launchMode": "most-recent"
         }
-      ]
+      ],
+      "expo-router"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,7 +27,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -38,8 +42,13 @@
     },
     "extra": {
       "eas": {
-        "projectId": "888136f8-c37b-46a2-a672-1f81c556d7f2"
+        "projectId": "def7dea8-296b-4a30-9359-83cacc25a017"
+      },
+      "router": {
+        "origin": false
       }
-    }
+    },
+    "newArchEnabled": true,
+    "owner": "lucaspaulinoh"
   }
 }

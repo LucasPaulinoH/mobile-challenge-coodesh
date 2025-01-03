@@ -1,9 +1,12 @@
+import Input from "components/Input";
+import LabelButton from "components/buttons/LabelButton";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useState } from "react";
-import { Button, KeyboardAvoidingView, TextInput, View } from "react-native";
+import { KeyboardAvoidingView, Text } from "react-native";
+import styled from "styled-components/native";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
 
 export default function Login() {
@@ -34,21 +37,45 @@ export default function Login() {
   };
 
   return (
-    <View>
-      <KeyboardAvoidingView behavior="padding">
-        <TextInput
-          value={email}
-          placeholder="Email*"
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          value={password}
-          placeholder="Password*"
-          onChangeText={(text) => setPassword(text)}
-        />
-        <Button title="Sign in" onPress={handleLogin} />
-        <Button title="Create account" onPress={handleRegister} />
-      </KeyboardAvoidingView>
-    </View>
+    <KeyboardAvoidingView behavior="padding">
+      <MainContainer>
+        <Text>
+          <h1>NAMU DICTIONARY</h1>
+        </Text>
+        <InnerContainer>
+          <Input placeholder="Email *" value={email} setValue={setEmail} />
+          <Input
+            placeholder="Password *"
+            value={password}
+            setValue={setPassword}
+            passwordType
+          />
+        </InnerContainer>
+        <InnerContainer>
+          <LabelButton label="Sign in" onPress={handleLogin} />
+          <LabelButton label="Create account" onPress={handleRegister} />
+        </InnerContainer>
+      </MainContainer>
+    </KeyboardAvoidingView>
   );
 }
+
+const MainContainer = styled.View`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0px 30px;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+`;
+
+const InnerContainer = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 400px;
+`;

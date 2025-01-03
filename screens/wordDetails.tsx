@@ -1,12 +1,15 @@
 import AudioPlayer from "components/AudioPlayer";
 import FavoriteButton from "components/FavoriteButton";
+import IconButton from "components/buttons/IconButton";
 import useCustomNavigation from "hooks/useCustomNavigation";
 import { useFetchWordDefinition } from "hooks/useFetchWordDefinition";
 import useStats from "hooks/useStats";
-import React, { useEffect, useState } from "react";
-import { Button, View, Text } from "react-native";
+import { IoChevronBackOutline } from "react-icons/io5";
+import { View, Text, TouchableOpacity } from "react-native";
+import styled from "styled-components/native";
 import { searchForPhoneticAudioSource } from "utils/diverse";
 import {
+  DEFAULT_BUTTON_DIMENSIONS,
   formatWordPhoneticText,
   handleShowMeaningsString,
 } from "utils/stringUtils";
@@ -24,36 +27,56 @@ const WordDetails = () => {
     meanings = handleShowMeaningsString(wordDefinition?.meanings!);
 
   return (
-    <View>
-      <Button title="<" onPress={() => navigate("Home")} />
+    <Container>
+      <BackButtonContainer>
+        <IconButton
+          onPress={() => navigate("Home")}
+          icon={
+            <IoChevronBackOutline
+              style={{
+                width: DEFAULT_BUTTON_DIMENSIONS,
+                height: DEFAULT_BUTTON_DIMENSIONS,
+              }}
+            />
+          }
+        />
+      </BackButtonContainer>
       {wordDefinition ? (
-        <View>
-          <Text>
-            <h1>{wordDefinition?.word}</h1>
+        <WordInfoContainer>
+          <WordAndPhoneticsBoard>
+            <Text>
+              <h1>{wordDefinition?.word}</h1>
+            </Text>
+            <Text>
+              <h2>
+                {formatWordPhoneticText(wordDefinition?.phonetics[0]?.text) ||
+                  formatWordPhoneticText(wordDefinition?.phonetics[1]?.text) ||
+                  null}
+              </h2>
+            </Text>
+          </WordAndPhoneticsBoard>
 
-            <h2>
-              {formatWordPhoneticText(wordDefinition?.phonetics[0]?.text) ||
-                null}
-            </h2>
-            <h2>
-              {formatWordPhoneticText(wordDefinition?.phonetics[1]?.text) ||
-                null}
-            </h2>
-          </Text>
+          {searchForPhoneticAudioSource(wordDefinition?.phonetics)! && (
+            <AudioPlayer
+              url={searchForPhoneticAudioSource(wordDefinition?.phonetics)!}
+            />
+          )}
 
-          <View>
+          <MeaningsContainer>
             <Text>
               <h3>Meanings</h3>
             </Text>
-            {meanings.map((meaning, index) => (
-              <Text key={index}>{meaning}</Text>
-            ))}
-          </View>
+            <MeaningsInnerContainer>
+              {meanings.map((meaning, index) => (
+                <Text key={index}>- {meaning}</Text>
+              ))}
+            </MeaningsInnerContainer>
+          </MeaningsContainer>
 
-          <AudioPlayer
-            url={searchForPhoneticAudioSource(wordDefinition?.phonetics)!}
-          />
-        </View>
+          <FavoriteButtonContainer>
+            <FavoriteButton stats={stats!} />
+          </FavoriteButtonContainer>
+        </WordInfoContainer>
       ) : (
         <View>
           <Text>
@@ -61,9 +84,62 @@ const WordDetails = () => {
           </Text>
         </View>
       )}
-      <FavoriteButton stats={stats!} />
-    </View>
+    </Container>
   );
 };
 
 export default WordDetails;
+
+const Container = styled.View`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  gap: 50px;
+`;
+
+const BackButtonContainer = styled.View`
+  align-self: flex-start;
+`;
+
+const WordInfoContainer = styled.View`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  max-width: 400px;
+`;
+
+const WordAndPhoneticsBoard = styled.View`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 100%;
+  background-color: antiquewhite;
+  border-radius: 5px;
+  border: 1px solid #000;
+`;
+
+const MeaningsContainer = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MeaningsInnerContainer = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: justify;
+`;
+
+const FavoriteButtonContainer = styled.View`
+  width: 100%;
+  margin: 30px 0px;
+`;

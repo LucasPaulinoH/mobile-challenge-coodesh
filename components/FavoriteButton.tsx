@@ -1,4 +1,6 @@
 import useCustomNavigation from "hooks/useCustomNavigation";
+import { CSSProperties } from "react";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { Button } from "react-native";
 import {
   FIRESTORE_FAVORITES_COLLECTION_NAME,
@@ -6,10 +8,19 @@ import {
 } from "services/firestoreServices";
 import { Stats } from "types/stats";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
+import { DEFAULT_BUTTON_DIMENSIONS } from "utils/stringUtils";
+
+import LabelButton from "./buttons/LabelButton";
 
 interface FavoriteButtonProps {
   stats: Stats;
 }
+
+const ICON_STYLE: CSSProperties = {
+  width: DEFAULT_BUTTON_DIMENSIONS,
+  height: DEFAULT_BUTTON_DIMENSIONS,
+  color: "#fff",
+};
 
 const FavoriteButton = (props: FavoriteButtonProps) => {
   const { navigate } = useCustomNavigation();
@@ -38,9 +49,16 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
   };
 
   return (
-    <Button
-      title={!isFavorite() ? "Favoritar" : "Desfavoritar"}
+    <LabelButton
+      label={!isFavorite() ? "Favoritar" : "Desfavoritar"}
       onPress={handleFavoriteClick}
+      icon={
+        !isFavorite() ? (
+          <MdFavorite style={ICON_STYLE} />
+        ) : (
+          <MdFavoriteBorder style={ICON_STYLE} />
+        )
+      }
     />
   );
 };
