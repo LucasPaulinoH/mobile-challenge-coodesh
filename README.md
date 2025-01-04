@@ -57,7 +57,3 @@ Para utilizar a aplicação, é necessário um dispositivo com sistema operacion
 [DOWNLOAD APK](./releases/namu-mobile-dictionary-lucas-paulino.apk)
 
 > This is a challenge by [Coodesh](https://coodesh.com/)
-
-```
-
-```
