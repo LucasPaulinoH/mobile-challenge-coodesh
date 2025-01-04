@@ -45,8 +45,8 @@ const WordDetails = () => {
           {wordDefinition ? (
             <WordInfoContainer>
               <WordAndPhoneticsBoard>
-                <Text>{wordDefinition?.word}</Text>
-                <Text>
+                <Title style={{ fontSize: 30 }}>{wordDefinition?.word}</Title>
+                <Title>
                   {`${
                     formatWordPhoneticText(
                       wordDefinition?.phonetics[0]?.text,
@@ -56,7 +56,7 @@ const WordDetails = () => {
                     ) ||
                     "No phonetics found"
                   } `}
-                </Text>
+                </Title>
               </WordAndPhoneticsBoard>
 
               <View style={{ marginBottom: -20 }}>
@@ -64,7 +64,7 @@ const WordDetails = () => {
               </View>
 
               <MeaningsContainer>
-                <Text>Meanings</Text>
+                <Title>Meanings</Title>
                 <MeaningsInnerContainer>
                   {meanings.map((meaning, index) => (
                     <Text key={index}>- {meaning}</Text>
@@ -86,7 +86,7 @@ const WordDetails = () => {
           )}
         </View>
       ) : (
-        <View>
+        <View style={{ minWidth: "90%" }}>
           <Loading />
         </View>
       )}
@@ -105,6 +105,11 @@ const Container = styled.View`
   padding: 30px;
   gap: 50px;
   margin-top: 20px;
+`;
+
+const Title = styled.Text`
+  font-weight: bold;
+  font-size: 20;
 `;
 
 const BackButtonContainer = styled.View`
@@ -130,12 +135,15 @@ const WordAndPhoneticsBoard = styled.View`
   background-color: #eee;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  gap: 10px;
 `;
 
 const MeaningsContainer = styled.View`
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 20px;
 `;
 
 const MeaningsInnerContainer = styled.View`

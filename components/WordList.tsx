@@ -1,7 +1,7 @@
 import useCustomNavigation from "hooks/useCustomNavigation";
 import useSelectedWord from "hooks/useSelectedWord";
 import useStats from "hooks/useStats";
-import { Text, VirtualizedList } from "react-native";
+import { Text, View, VirtualizedList } from "react-native";
 import {
   FIRESTORE_HISTORY_COLLECTION_NAME,
   firestoreServices,
@@ -9,6 +9,8 @@ import {
 import styled from "styled-components/native";
 import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
+
+import Loading from "./Loading";
 
 interface WordListProps {
   words: string[];
@@ -50,12 +52,11 @@ const WordList = (props: WordListProps) => {
     return result;
   };
 
-  const chunkedWords = chunkArray(filteredWords, 2);
+  const chunkedWords = chunkArray(filteredWords, 3);
 
   return (
     <VirtualizedList
       data={chunkedWords}
-      initialNumToRender={1}
       renderItem={({ item }: { item: string[] }) => (
         <WordListItemRow>
           {item.map((word: string, index: number) => (
@@ -70,7 +71,15 @@ const WordList = (props: WordListProps) => {
       getItemCount={(data) => data.length}
       getItem={(data, index) => data[index]}
       keyExtractor={(_, index) => index.toString()}
-      windowSize={10}
+      onEndReachedThreshold={0.1}
+      ListFooterComponent={
+        chunkedWords.length > 100 ? (
+          <View style={{ alignSelf: "flex-start" }}>
+            <Loading />
+          </View>
+        ) : null
+      }
+      windowSize={1000}
     />
   );
 };
@@ -79,8 +88,6 @@ export default WordList;
 
 const WordListItemRow = styled.View`
   flex-direction: row;
-  justify-content: space-around;
-  max-width: 400px;
   min-width: 100%;
   margin-bottom: 10px;
   gap: 10px;
@@ -125,7 +132,7 @@ const WordListItem = (props: WordListItemProps) => {
 
   return (
     <WordListItemContainer onPress={handleWordClick}>
-      <Text style={{ fontSize: 18 }}>{word}</Text>
+      <Text>{word}</Text>
     </WordListItemContainer>
   );
 };

@@ -39,7 +39,7 @@ export default function Login() {
   return (
     <KeyboardAvoidingView behavior="padding">
       <MainContainer>
-        <Text>NAMU DICTIONARY</Text>
+        <Title>Namu Dictionary</Title>
         <InnerContainer>
           <Input placeholder="Email *" value={email} setValue={setEmail} />
           <Input
@@ -76,4 +76,9 @@ const InnerContainer = styled.View`
   justify-content: center;
   gap: 10px;
   max-width: 400px;
+`;
+
+const Title = styled.Text`
+  font-weight: bold;
+  font-size: 30;
 `;

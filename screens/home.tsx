@@ -1,4 +1,5 @@
 import Input from "components/Input";
+import Loading from "components/Loading";
 import Tabs from "components/Tabs";
 import WordList from "components/WordList";
 import IconButton from "components/buttons/IconButton";
@@ -21,7 +22,7 @@ export default function Home() {
 
   const { setStats } = useStats();
 
-  const wordList = ["Hello", "Highway", "World"];
+  const { wordList, isFetching } = useLoadWordList();
   const { favoriteWords } = useGetFavoriteWords(currentUser?.uid!)!;
   const { wordsHistory } = useGetWordsHistory(currentUser?.uid!)!;
 
@@ -79,16 +80,22 @@ export default function Home() {
           }
         />
       </Header>
-      <InnerContainer>
-        <Input placeholder="Search..." value={search} setValue={setSearch} />
+      {!isFetching ? (
+        <InnerContainer>
+          <Input placeholder="Search..." value={search} setValue={setSearch} />
 
-        <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-        {selectedTab === 0
-          ? renderWordList
-          : selectedTab === 1
-            ? renderHistoryList
-            : renderFavoritesList}
-      </InnerContainer>
+          <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+          <>
+            {selectedTab === 0
+              ? renderWordList
+              : selectedTab === 1
+                ? renderHistoryList
+                : renderFavoritesList}
+          </>
+        </InnerContainer>
+      ) : (
+        <Loading />
+      )}
     </Container>
   );
 }
@@ -105,6 +112,7 @@ const Container = styled.View`
 
 const InnerContainer = styled.View`
   width: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -124,4 +132,5 @@ const Header = styled.View`
 
 const Username = styled.Text`
   font-weight: bold;
+  font-size: 15;
 `;
