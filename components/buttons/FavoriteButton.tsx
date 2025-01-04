@@ -1,7 +1,7 @@
 import useCustomNavigation from "hooks/useCustomNavigation";
 import { CSSProperties } from "react";
-import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { Button } from "react-native";
+import { Icon } from "react-native-eva-icons";
 import {
   FIRESTORE_FAVORITES_COLLECTION_NAME,
   firestoreServices,
@@ -15,12 +15,6 @@ import LabelButton from "./LabelButton";
 interface FavoriteButtonProps {
   stats: Stats;
 }
-
-const ICON_STYLE: CSSProperties = {
-  width: DEFAULT_BUTTON_DIMENSIONS,
-  height: DEFAULT_BUTTON_DIMENSIONS,
-  color: "#fff",
-};
 
 const FavoriteButton = (props: FavoriteButtonProps) => {
   const { navigate } = useCustomNavigation();
@@ -54,9 +48,19 @@ const FavoriteButton = (props: FavoriteButtonProps) => {
       onPress={handleFavoriteClick}
       icon={
         !isFavorite() ? (
-          <MdFavorite style={ICON_STYLE} />
+          <Icon
+            name="heart"
+            width={DEFAULT_BUTTON_DIMENSIONS}
+            height={DEFAULT_BUTTON_DIMENSIONS}
+            fill="#fff"
+          />
         ) : (
-          <MdFavoriteBorder style={ICON_STYLE} />
+          <Icon
+            name="heart-outline"
+            width={DEFAULT_BUTTON_DIMENSIONS}
+            height={DEFAULT_BUTTON_DIMENSIONS}
+            fill="#fff"
+          />
         )
       }
     />

@@ -26,7 +26,9 @@ export default Input;
 const Container = styled.TextInput`
   width: 100%;
   min-height: 60px;
-  border: 1px solid #000;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0,0,0,0.5);
   border-radius: 5px;
   padding: 10px;
 `;

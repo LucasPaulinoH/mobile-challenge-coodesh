@@ -27,9 +27,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -48,7 +46,6 @@
         "origin": false
       }
     },
-    "newArchEnabled": true,
     "owner": "lucaspaulinoh"
   }
 }

@@ -39,9 +39,7 @@ export default function Login() {
   return (
     <KeyboardAvoidingView behavior="padding">
       <MainContainer>
-        <Text>
-          <h1>NAMU DICTIONARY</h1>
-        </Text>
+        <Text>NAMU DICTIONARY</Text>
         <InnerContainer>
           <Input placeholder="Email *" value={email} setValue={setEmail} />
           <Input
@@ -61,7 +59,7 @@ export default function Login() {
 }
 
 const MainContainer = styled.View`
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   margin: 0px 30px;

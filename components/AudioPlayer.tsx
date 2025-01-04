@@ -1,12 +1,11 @@
 import * as Speech from "expo-speech";
 import React, { useState } from "react";
-import { GiSoundWaves } from "react-icons/gi";
-import { IoIosPlay } from "react-icons/io";
+import { Icon } from "react-native-eva-icons";
 import styled from "styled-components/native";
 
 import IconButton from "./buttons/IconButton";
 
-const ICON_DIMENSIONS = "50px";
+const ICON_DIMENSIONS = 50;
 
 interface AudioPlayerProps {
   text: string;
@@ -28,10 +27,21 @@ const AudioPlayer = (props: AudioPlayerProps) => {
   return (
     <AudioPlayerContainer>
       {isPlaying ? (
-        <GiSoundWaves style={IconStyles} color="#b1b1b1" />
+        <Icon
+          name="volume-up-outline"
+          width={ICON_DIMENSIONS}
+          height={ICON_DIMENSIONS}
+          fill="rgba(0,0,0,0.5)"
+        />
       ) : (
         <IconButton
-          icon={<IoIosPlay style={IconStyles} />}
+          icon={
+            <Icon
+              name="play-circle-outline"
+              width={ICON_DIMENSIONS}
+              height={ICON_DIMENSIONS}
+            />
+          }
           onPress={togglePlay}
         />
       )}
@@ -51,8 +61,3 @@ const AudioPlayerContainer = styled.View`
   width: 100%;
   margin: 0;
 `;
-
-const IconStyles = {
-  width: ICON_DIMENSIONS,
-  height: ICON_DIMENSIONS,
-};

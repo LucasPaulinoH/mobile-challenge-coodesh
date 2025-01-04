@@ -36,28 +36,27 @@ const TabsContainer = styled.View`
   border-radius: 5px;
   background-color: #eee;
   box-sizing: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 0.25rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.06);
+  padding: 4px;
   width: 100%;
   font-size: 14px;
 `;
 
 const Tab = styled.TouchableOpacity<{ selected: boolean }>`
+  flex: 1;
   border-radius: 5px;
-  flex: 1 1 auto;
-  text-align: center;
   background-color: ${({ selected }) => (selected ? "#fff" : "transparent")};
   transition: background-color 0.15s ease-in-out;
 `;
 
 const TabText = styled.Text<{ selected: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
+  border-radius: 5px;
   border: none;
-  padding: 0.5rem 0;
+  padding: 8px;
   color: #000;
   font-weight: ${({ selected }) => (selected ? "600" : "normal")};
   transition: font-weight 0.15s ease-in-out;
+  text-align: center;
 `;

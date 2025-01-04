@@ -5,8 +5,8 @@ import IconButton from "components/buttons/IconButton";
 import useCustomNavigation from "hooks/useCustomNavigation";
 import { useFetchWordDefinition } from "hooks/useFetchWordDefinition";
 import useStats from "hooks/useStats";
-import { IoChevronBackOutline } from "react-icons/io5";
 import { View, Text } from "react-native";
+import { Icon } from "react-native-eva-icons";
 import styled from "styled-components/native";
 import {
   DEFAULT_BUTTON_DIMENSIONS,
@@ -32,11 +32,10 @@ const WordDetails = () => {
         <IconButton
           onPress={() => navigate("Home")}
           icon={
-            <IoChevronBackOutline
-              style={{
-                width: DEFAULT_BUTTON_DIMENSIONS,
-                height: DEFAULT_BUTTON_DIMENSIONS,
-              }}
+            <Icon
+              name="arrow-ios-back-outline"
+              width={DEFAULT_BUTTON_DIMENSIONS}
+              height={DEFAULT_BUTTON_DIMENSIONS}
             />
           }
         />
@@ -46,21 +45,17 @@ const WordDetails = () => {
           {wordDefinition ? (
             <WordInfoContainer>
               <WordAndPhoneticsBoard>
+                <Text>{wordDefinition?.word}</Text>
                 <Text>
-                  <h1>{wordDefinition?.word}</h1>
-                </Text>
-                <Text>
-                  <h2>
-                    {`${
-                      formatWordPhoneticText(
-                        wordDefinition?.phonetics[0]?.text,
-                      ) ||
-                      formatWordPhoneticText(
-                        wordDefinition?.phonetics[1]?.text,
-                      ) ||
-                      "No phonetics found"
-                    } `}
-                  </h2>
+                  {`${
+                    formatWordPhoneticText(
+                      wordDefinition?.phonetics[0]?.text,
+                    ) ||
+                    formatWordPhoneticText(
+                      wordDefinition?.phonetics[1]?.text,
+                    ) ||
+                    "No phonetics found"
+                  } `}
                 </Text>
               </WordAndPhoneticsBoard>
 
@@ -69,9 +64,7 @@ const WordDetails = () => {
               </View>
 
               <MeaningsContainer>
-                <Text>
-                  <h3>Meanings</h3>
-                </Text>
+                <Text>Meanings</Text>
                 <MeaningsInnerContainer>
                   {meanings.map((meaning, index) => (
                     <Text key={index}>- {meaning}</Text>
@@ -85,9 +78,9 @@ const WordDetails = () => {
             </WordInfoContainer>
           ) : (
             <WordInfoContainer>
+              <Text style={{ textAlign: "center" }}>Invalid word</Text>
               <Text style={{ textAlign: "center" }}>
-                <h1>Invalid word</h1>
-                <p>Please search for a valid word to view its meaning.</p>
+                Please search for a valid word to view its meaning.
               </Text>
             </WordInfoContainer>
           )}
@@ -111,6 +104,7 @@ const Container = styled.View`
   align-items: center;
   padding: 30px;
   gap: 50px;
+  margin-top: 20px;
 `;
 
 const BackButtonContainer = styled.View`

@@ -7,7 +7,7 @@ import { useGetWordsHistory } from "hooks/useGetWordsHistory";
 import useLoadWordList from "hooks/useLoadWordList";
 import useStats from "hooks/useStats";
 import React, { useEffect, useState } from "react";
-import { RiLogoutBoxRLine } from "react-icons/ri";
+import { Icon } from "react-native-eva-icons";
 import styled from "styled-components/native";
 import { WordListMode } from "types/wordListMode";
 import { FIREBASE_AUTH } from "utils/firebaseConfig";
@@ -21,7 +21,7 @@ export default function Home() {
 
   const { setStats } = useStats();
 
-  const wordList = useLoadWordList();
+  const wordList = ["Hello", "Highway", "World"];
   const { favoriteWords } = useGetFavoriteWords(currentUser?.uid!)!;
   const { wordsHistory } = useGetWordsHistory(currentUser?.uid!)!;
 
@@ -71,11 +71,10 @@ export default function Home() {
         <IconButton
           onPress={handleLogout}
           icon={
-            <RiLogoutBoxRLine
-              style={{
-                width: DEFAULT_BUTTON_DIMENSIONS,
-                height: DEFAULT_BUTTON_DIMENSIONS,
-              }}
+            <Icon
+              name="log-out-outline"
+              width={DEFAULT_BUTTON_DIMENSIONS}
+              height={DEFAULT_BUTTON_DIMENSIONS}
             />
           }
         />
@@ -84,16 +83,11 @@ export default function Home() {
         <Input placeholder="Search..." value={search} setValue={setSearch} />
 
         <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-
-        {wordList ? (
-          <>
-            {selectedTab === 0
-              ? renderWordList
-              : selectedTab === 1
-                ? renderHistoryList
-                : renderFavoritesList}
-          </>
-        ) : null}
+        {selectedTab === 0
+          ? renderWordList
+          : selectedTab === 1
+            ? renderHistoryList
+            : renderFavoritesList}
       </InnerContainer>
     </Container>
   );
@@ -111,7 +105,6 @@ const Container = styled.View`
 
 const InnerContainer = styled.View`
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -126,6 +119,7 @@ const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 `;
 
 const Username = styled.Text`

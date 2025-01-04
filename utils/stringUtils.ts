@@ -22,4 +22,4 @@ export const handleShowMeaningsString = (meanings: Meanings[]): string[] => {
 
 export const getUsernameFromEmail = (email: string) => email?.split("@")[0];
 
-export const DEFAULT_BUTTON_DIMENSIONS = "25px";
+export const DEFAULT_BUTTON_DIMENSIONS = 25;
