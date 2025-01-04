@@ -57,6 +57,7 @@ const WordList = (props: WordListProps) => {
   return (
     <VirtualizedList
       data={chunkedWords}
+      initialNumToRender={250}
       renderItem={({ item }: { item: string[] }) => (
         <WordListItemRow>
           {item.map((word: string, index: number) => (
@@ -79,7 +80,7 @@ const WordList = (props: WordListProps) => {
           </View>
         ) : null
       }
-      windowSize={1000}
+      windowSize={100}
     />
   );
 };

@@ -82,7 +82,7 @@ export default function Home() {
       </Header>
       {!isFetching ? (
         <InnerContainer>
-          <Input placeholder="Search..." value={search} setValue={setSearch} />
+          {/* <Input placeholder="Search..." value={search} setValue={setSearch} /> */}
 
           <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           <>

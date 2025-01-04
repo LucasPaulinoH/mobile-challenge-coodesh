@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+# **Namu Mobile Challenge 20240202**
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## **Desenvolvido por Lucas Paulino**
 
-## Get started
+Aplicativo de dicionário interativo da língua inglesa
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## **Descrição**
 
-2. Start the app
+Este projeto foi desenvolvido como solução para o **Coodesh Mobile Challenge 20240202**. A aplicação consiste em um dicionário interativo de língua inglesa, oferecendo as seguintes funcionalidades obrigatórias:
 
-   ```bash
-    npx expo start
-   ```
+- Visualização de uma lista de palavras com rolagem infinita;
+- Exibição detalhada de uma palavra, incluindo seus significados e fonética;
+- Salvamento de palavras como favoritas;
+- Remoção de palavras da lista de favoritos;
+- Consulta a uma lista de palavras já visualizadas anteriormente.
 
-In the output, you'll find options to open the app in a
+## **Detalhes do Projeto**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+O banco de dados utilizado para fornecer as palavras da língua inglesa é um arquivo JSON disponível publicamente no seguinte endereço:  
+[https://raw.githubusercontent.com/dwyl/english-words/refs/heads/master/words_dictionary.json](https://raw.githubusercontent.com/dwyl/english-words/refs/heads/master/words_dictionary.json).  
+Esse recurso é acessado pela aplicação por meio de requisições HTTP.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Visando otimizar o desempenho, os resultados das requisições são armazenados em cache utilizando a biblioteca **React Query**.  
+Referência: [https://www.npmjs.com/package/react-query](https://www.npmjs.com/package/react-query).
 
-## Get a fresh project
+A implementação das funcionalidades solicitadas, o gerenciamento de cache e a criação de uma interface gráfica alinhada ao wireframe fornecido atendem integralmente os três critérios obrigatórios do desafio.
 
-When you're ready, run:
+## **Funcionalidades Adicionais Implementadas**
 
-```bash
-npm run reset-project
+Além das funcionalidades obrigatórias, foram desenvolvidos os seguintes critérios diferenciais, com o objetivo de agregar valor à solução:
+
+- Tocador de áudio.
+- Utilizar alguma ferramenta de injeção de dependência (Context API e Custom Hooks);
+- Login com Usuário e Senha:
+  - Implementação do sistema de autenticação via Firebase Auth.
+  - Associação de palavras favoritas e histórico de visualização ao ID do usuário, via Firestore.
+
+---
+
+## **Tecnologias Utilizadas**
+
+- Linguagem: TypeScript;
+- Framework: React Native;
+- Ferramentas e bibliotecas: **Expo** (plataforma para desenvolvimento React Native), **Styled Components** (estilização), **Context API** (gerência de estado) & **Firebase** (Auth);
+- Banco de Dados: **Firestore** e arquivo JSON.
+
+---
+
+## **Instalação e Uso**
+
+### Pré-requisitos
+
+Para utilizar a aplicação, é necessário um dispositivo com sistema operacional Android (seja um smartphone físico ou emulador). O APK pode ser baixado através do link abaixo:
+
+[BAIXAR APK](./releases/namu-mobile-dictionary-lucas-paulino.apk)
+
+> This is a challenge by [Coodesh](https://coodesh.com/)
+
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
