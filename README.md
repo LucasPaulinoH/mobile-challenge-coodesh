@@ -52,9 +52,9 @@ Além das funcionalidades obrigatórias, foram desenvolvidos os seguintes crité
 
 ### Pré-requisitos
 
-Para utilizar a aplicação, é necessário um dispositivo com sistema operacional Android (seja um smartphone físico ou emulador). O APK pode ser baixado através do link abaixo:
+Para utilizar a aplicação, é necessário um dispositivo com sistema operacional Android (seja um smartphone físico ou emulador). O APK pode ser baixado através do link abaixo, ou através da aba releases:
 
-[BAIXAR APK](./releases/namu-mobile-dictionary-lucas-paulino.apk)
+[DOWNLOAD APK](./releases/namu-mobile-dictionary-lucas-paulino.apk)
 
 > This is a challenge by [Coodesh](https://coodesh.com/)
 
